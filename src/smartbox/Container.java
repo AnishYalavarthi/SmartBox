@@ -1,9 +1,7 @@
 package smartbox;
 
 import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
-import java.net.*;
+
 import mvc.*;
 
 
@@ -23,7 +21,6 @@ public class Container extends Model {
 
     public void addComponent(String name) throws Exception {
         String qualName = "smartbox.components." +  name;
-        // Object obj = a new instance of qualName
         Object obj = Class.forName(qualName).newInstance();
         addComponent((Component)obj);
     }
@@ -31,24 +28,20 @@ public class Container extends Model {
 
     private void addComponent(Component component) throws Exception {
         component.setContainer(this);
-        // add new guy to the componebnts table:
         components.put(component.name, component);
-        // update provided interfaces table:
         for(Class<?> intf: component.getProvidedInterfaces()) {
             providedInterfaces.put(intf,  component);
         }
-        // update required interfaces table:
-        //???
-        //find providers for the new component and hook him up:
+        for(Class<?> intf: component.getRequiredInterfaces()) {
+            requiredInterfaces.put(intf,  component);
+        }
         findProviders();
-        // mvc stuff:
         changed();
     }
 
     public void remComponent(String name) throws Exception {
         Component component = components.get(name);
         components.remove(name);
-        // unhook removed guy from any clients:
         for(Class<?> intf: component.getProvidedInterfaces()) {
             for(Component client: components.values()) {
                 if (client.getRequiredInterfaces().contains(intf)) {
@@ -68,7 +61,6 @@ public class Container extends Model {
             Component provider = providedInterfaces.get(intf);
             if (client != null && provider != null) {
                 client.setProvider(intf,  provider);
-                //requiredInterfaces.remove(intf); this line makes iterator obsolete
                 requiredInterfaces.put(intf, null);
             }
         }
@@ -76,8 +68,13 @@ public class Container extends Model {
 
     public void launch(String name) throws Exception {
         try {
-            // look up component and call main if it's an App
-        } catch(Exception e) {
+            Component c = components.get(name);
+                if (c != null && c.getProvidedInterfaces().contains(App.class)){
+                    App a = (App) c;
+                    a.main();
+                }
+            }
+        catch (Exception e) {
             mvc.Utilities.error(e);
             e.printStackTrace();
         }
@@ -86,7 +83,7 @@ public class Container extends Model {
     // needed by File/Open to restore component.fields
     public void initContainer(){
         for(Component c: components.values()) c.initComponent();
-        changed(); // needed?
+        changed();
     }
 
 }

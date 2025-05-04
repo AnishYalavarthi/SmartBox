@@ -1,6 +1,9 @@
 package smartbox.components;
 
-import smartbox.Component;
+import smartbox.*;
+import smartbox.components.ICalculator;
+
+import java.util.Set;
 
 public class Calculator extends Component implements ICalculator {
 
@@ -18,7 +21,6 @@ public class Calculator extends Component implements ICalculator {
         return x - y;
     }
 
-    public Double div(Double x, Double y) {
-        return x / y;
-    }
+    public Double div(Double x, Double y) { return x / y; }
+
 }

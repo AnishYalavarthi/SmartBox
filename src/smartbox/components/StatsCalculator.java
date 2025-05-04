@@ -1,13 +1,13 @@
 package smartbox.components;
 
-import smartbox.*;
+import smartbox.App;
+import smartbox.Component;
 
 import java.util.*;
 
 public class StatsCalculator extends Component implements App {
 
     public ICalculator arithmeticCalculator;
-
     public StatsCalculator() {
         super();
     }
@@ -22,7 +22,6 @@ public class StatsCalculator extends Component implements App {
     }
 
     public void main() throws Exception {
-
         List<Double> scores = new LinkedList<Double>();
         for(int i = 0; i < 100; i++) {
             scores.add((double)i);
