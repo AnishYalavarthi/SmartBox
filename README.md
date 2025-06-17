@@ -1,0 +1,1 @@
+Java project involving the use of MVC principles, along with Component-Container architecture. Add, Remove, and Run buttons on UI change/run components present (e.g. StatsCalculator) on stack. Each component added joins container, and adds to a HashMap of provided & required interfaces, which allows it to find any necessary clients/providers.
