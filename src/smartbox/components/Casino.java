@@ -41,7 +41,7 @@ public class Casino extends Component implements CommandProcessor {
                 result = "total = " + playerTotal + ", again?";
             }
         } else if (request.equalsIgnoreCase("stay")) {
-            result = "player total = " + playerTotal + ", casino total = " + casinoTotal;
+            result = "player total = " + playerTotal + ",casino total = " + casinoTotal;
             if (playerTotal < casinoTotal) {
                 result = result + ", you lose!";
             } else if (playerTotal > casinoTotal) {
